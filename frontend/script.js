@@ -21,20 +21,29 @@
         const strArrayToCellArray = strArray => strArray.map(str => strToCell(str))
         const cellArrayToRow = cells => ((r = ce('tr')) => (r.append(...cells), r))()
         const rows = data.map(objToValueArrayByKeyList(headers)).map(strArrayToCellArray).map(cellArrayToRow)
-        const inputRow = headers.map(() => ce('input')).map(i => ((td = ce('td')) => (td.append(i), td))())
-        const tbody = document.createElement('tbody')
-        return (tbody.append(...rows, cellArrayToRow(inputRow)), tbody)
+        const tbody = ce('tbody')
+        return (tbody.prepend(...rows), tbody)
     }
 
     function saveHandler(table) {
-        const inputs = Array.from(table.getElementsByTagName('input'))
+        const inputCells = table.getElementsByClassName('input-row')[0].children
+        const inputs = Array.from(inputCells).map(td => td.children[0])
         return async () => {
             const newObj = getHeaders(table)
                 .reduce((o, h, i) => (o[h] = inputs[i].value, o), {})
-            const body = JSON.stringify(newObj)
-            const headers = {'Content-Type': 'application/json'}
-            const res = await fetch(url, {method: 'POST', headers: headers, body: body})
-            if (res.status === 201) (inputs.forEach(i => i.value = ''), location.reload())
+            if (validateCoffeeVariety(newObj) || true) {
+                const body = JSON.stringify(newObj)
+                const headers = {'Content-Type': 'application/json'}
+                const res = await fetch(url, {method: 'POST', headers: headers, body: body})
+                if (res.status === 201) (inputs.forEach(i => i.value = ''), location.reload())
+            } else Array.from(inputCells).forEach(c => c.style.backgroundColor = 'red')
         }
     }
+
+    function validateCoffeeVariety(o) {
+        return (Number.isInteger(o.weight) || console.log("invalid weight"))
+            && (!isNaN(o.price) || console.log("invalid price"))
+            && ([1, 2, 3, 4, 5].some(i => i === parseInt(o.roast)) || console.log("invalid roast"))
+    }
+
 })()
