@@ -1,4 +1,5 @@
 const http = require('http')
+const fs = require("fs");
 let l
 
 const server = (list) => http.createServer((req, res) => {
@@ -12,9 +13,31 @@ const server = (list) => http.createServer((req, res) => {
 
 function handleGet(req, res) {
     switch (req.url) {
-        case '/coffee': sendCoffeeList(req, res); break
+        case '/':
+            req.url = '/index.html'
+            sendStatic(req, res); break
+        case '/coffee':
+            sendCoffeeList(req, res); break
+        case req.url.match(/^\/[\w.]+$/)?.input:
+            sendStatic(req, res); break
         default: res.writeHead(404).end()
     }
+}
+
+// TODO: client side caching and subfolders
+function sendStatic(req, res) {
+    const fileName = /^\/[\w.]+$/.exec(req.url)[0]
+    const file = readFile('../frontend/' + fileName)
+    if (file) {
+        const extension = /\.(\w+)$/.exec(req.url)[1]
+        const type = extension === 'js' ? 'javascript' : extension
+        if (file) res.setHeader('Content-Type', 'text/' + type).end(file)
+    } else res.writeHead(404).end()
+}
+
+function readFile(path) {
+    try { return fs.readFileSync(path, 'utf8') }
+    catch (e) {}
 }
 
 function sendCoffeeList(req, res) {
