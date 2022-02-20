@@ -1,0 +1,6 @@
+{
+  "name": "vanilla-full-stack",
+  "devDependencies": {
+    "puppeteer": "^13.3.2"
+  }
+}
