@@ -3,7 +3,7 @@ const path = './db.json'
 const list = {}
 list.read = () => fs.readFileSync(path, 'utf8')
 list.write = (content) => fs.writeFileSync(path, content)
-const server = require('./server.js')(list)
+const server = require('./backend/server.js')(list)
 
 try { fs.readFileSync(path, 'utf8') }
 catch (e) { fs.writeFileSync(path, '[]') }

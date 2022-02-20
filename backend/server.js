@@ -27,7 +27,7 @@ function handleGet(req, res) {
 // TODO: client side caching and subfolders
 function sendStatic(req, res) {
     const fileName = /^\/[\w.]+$/.exec(req.url)[0]
-    const file = readFile('../frontend/' + fileName)
+    const file = readFile('frontend/' + fileName)
     if (file) {
         const extension = /\.(\w+)$/.exec(req.url)[1]
         const type = extension === 'js' ? 'javascript' : extension

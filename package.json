@@ -2,5 +2,9 @@
   "name": "vanilla-full-stack",
   "devDependencies": {
     "puppeteer": "^13.3.2"
+  },
+  "scripts": {
+    "start": "node start.js",
+    "test": "node backend/server.test.js"
   }
 }
