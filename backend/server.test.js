@@ -31,6 +31,18 @@ async function postTest(page) {
     )
 }
 
+async function getTest(page) {
+    startMsg('Testing GET: /coffee')
+    mockList = '[{"name":"Juhla Mokka","weight":500,"price":5.79,"roast":1},' +
+        '{"name":"Saludo","weight":450,"price":4.95,"roast":1}]'
+    const [res] = await Promise.all([page.waitForResponse(r => r), page.goto(url + '/coffee')])
+    const resText = await res.text()
+    page.close()
+    assert('GET succeeded',
+        equal('Coffee list', mockList, resText)
+    )
+}
+
 (async () => {
     startMsg('\nStarting server')
     server.listen(port, host)
@@ -39,6 +51,8 @@ async function postTest(page) {
     const browser = await puppeteer.launch()
     const postPage = await browser.newPage()
     await postTest(postPage)
+    const getPage = await browser.newPage()
+    await getTest(getPage)
     await browser.close()
     server.close()
     process.exit(0)

@@ -11,7 +11,15 @@ const server = (list) => http.createServer((req, res) => {
 })
 
 function handleGet(req, res) {
+    switch (req.url) {
+        case '/coffee': sendCoffeeList(req, res); break
+        default: res.writeHead(404).end()
+    }
+}
 
+function sendCoffeeList(req, res) {
+    const list = l.read()
+    res.setHeader('Content-Type', 'application/json').end(list)
 }
 
 function handlePost(req, res) {
