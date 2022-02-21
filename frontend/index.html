@@ -10,19 +10,27 @@
     <table id="coffee-table">
         <thead>
         <tr>
-            <td data-col-name="name">Nimi</td>
-            <td data-col-name="weight">Paino</td>
-            <td data-col-name="price">Hinta</td>
-            <td data-col-name="roast">Paahto</td>
+            <td>Nimi</td>
+            <td>Paino</td>
+            <td>Hinta</td>
+            <td>Paahto</td>
         </tr>
         </thead>
         <tbody>
-        <tr class="input-row">
-            <td><input></td>
-            <td><input></td>
-            <td><input></td>
+        <template data-template-row>
+            <tr>
+                <td data-cell="name"></td>
+                <td data-cell="weight"></td>
+                <td data-cell="price"></td>
+                <td data-cell="roast"></td>
+            </tr>
+        </template>
+        <tr>
+            <td><input data-input="name" required></td>
+            <td><input data-input="weight"></td>
+            <td><input data-input="price"></td>
             <td>
-                <select>
+                <select data-input="roast">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
